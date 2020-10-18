@@ -4,17 +4,19 @@ var supportedSites = ["Fox News", "CNN", "Donald J. Trump", "Joe Biden"];
 
 var indexOfNewsArticles = [];
 
+var finalResult = [];
+
 console.log("Start injection");
 
 var theActualFeedElement = document.querySelector('[role="feed"]');
 
-sleep(2000).then(() => {
-  theActualFeedElement.addEventListener(
-    "DOMSubtreeModified",
-    contentChanged,
-    false
-  );
-});
+// sleep(2000).then(() => {
+theActualFeedElement.addEventListener(
+  "DOMSubtreeModified",
+  contentChanged,
+  false
+);
+// });
 
 var lastFeedIndex = 0; // Index used for pagination
 var lastMetadataIndex = 0;
@@ -53,59 +55,146 @@ function contentChanged() {
 
   lastFeedIndex = feedElement.length;
 
-  for (i = lastMetadataIndex; i < metadataElements.length; i += 2) {
+  for (i = lastMetadataIndex; i < metadataElements.length - 1; i += 2) {
     let text = metadataElements[i].innerText;
     // Not a supported site
     // if (!supportedSites.includes(text)) {
     //   continue;
     // }
-    insertIntoFeed(Math.floor((i + 2) / 2));
+    insertIntoFeed(Math.floor((i + 2) / 2), metadataElements[i + 1].innerText);
   }
 
   lastMetadataIndex = metadataElements.length;
 
-  //   sleep(10000).then(() => {
-  //     return;
-  //   });
-  theActualFeedElement.addEventListener(
-    "DOMSubtreeModified",
-    contentChanged,
-    false
-  );
+  sleep(1000).then(() => {
+    theActualFeedElement.addEventListener(
+      "DOMSubtreeModified",
+      contentChanged,
+      false
+    );
+  });
 }
 
-function insertIntoFeed(index) {
+function insertIntoFeed(index, caption) {
   //   console.log("insert index: " + index);
   var feedUnitsElements = document.querySelectorAll(
     '[data-pagelet^="FeedUnit_"]'
   );
-  //   console.log(feedUnitsElements);
   if (index >= feedUnitsElements.length) {
     return;
   }
-  feedUnitsElements[index].insertAdjacentHTML(
-    "afterend",
-    `<div style="width:100% !important;background-color: red !important;"><h1>HELLO</h1></div><br>`
-  );
+
+  buildPost(caption).then((resp) => {
+    if (finalResult.length < 1) {
+      return;
+    }
+    let title = finalResult[0].title || "No Title Found";
+    console.log(finalResult[0].title);
+    feedUnitsElements[index].insertAdjacentHTML(
+      "afterend",
+      `<div style="width:100% !important;background-color: red !important;"><h1>${title}</h1></div><br>`
+    );
+  });
+
+  //   let keywords = getKeywords(caption);
 }
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-// Get the element that has the post author
-//   var authorListElements = [];
+async function buildPost(caption) {
+  // First make request for NLP keywords
+  axios({
+    method: "post",
+    url:
+      "https://us-central1-neutral-news-292821.cloudfunctions.net/nlp_keywords",
+    data: { headline: caption },
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      //   console.log("Success getting keywords");
+      //   console.log(response);
 
-//   var captionListElements = [];
+      if (response["data"].length < 1) {
+        return false;
+      }
 
-//   // console.log(posts);
+      axios({
+        method: "post",
+        url:
+          "https://h985rroh38.execute-api.us-west-2.amazonaws.com/dev/get-news",
+        data: { headline: response["data"] },
+      })
+        .then((response2) => {
+          //   console.log(response2);
+          if (
+            response2["data"] != null &&
+            response2["data"]["statusCode"] != null &&
+            response2["data"]["statusCode"] == "404"
+          ) {
+            // Make a post request to populate DB
+            // First make get request
+            axios({
+              method: "post",
+              url:
+                "https://us-central1-neutral-news-292821.cloudfunctions.net/search-google-keywords",
+              data: { keywords: response["data"] },
+            })
+              .then((response3) => {
+                // console.log(response3);
+                finalResult = response3["data"];
+                // Save to database
+                axios({
+                  method: "post",
+                  url:
+                    "https://h985rroh38.execute-api.us-west-2.amazonaws.com/dev",
+                  data: {
+                    headline: response["data"],
+                    articles: response3["data"],
+                  },
+                })
+                  .then((response4) => {
+                    // console.log("Save to database");
+                    // console.log(response4);
+                  })
+                  .catch((error4) => console.error(error4));
+              })
+              .catch((error3) => {
+                console.log(error3);
+              });
+          } else {
+            //If already exists in DB
+            finalResult = response2["data"];
+          }
+        })
+        .catch((error2) => console.error(error2));
+    })
+    .catch((error) => console.error(error));
+}
 
-//   function showNewsArticle(authorElement, captionElement, index) {
-//     console.log(authorElement.innerText + " : : " + captionElement.innerText);
-//     if (supportedSites.includes(authorElement.innerText) == false) {
-//       return;
-//     }
+// function getKeywords(caption) {
+//   console.log("Entered axios");
 
-//     console.log("Supported Site: " + authorElement.innerText);
+//   const body = {
+//     headline: caption,
+//   };
 
-// sleep(5000).then(() => {}
+//   axios({
+//     method: "post",
+//     url:
+//       "https://us-central1-neutral-news-292821.cloudfunctions.net/nlp_keywords",
+//     data: body,
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   })
+//     .then((response) => {
+//       console.log("Response");
+//       console.log(response);
+//       return response;
+//     })
+//     .catch((error) => console.error(error));
+// }
