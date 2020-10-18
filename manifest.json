@@ -8,5 +8,9 @@
           "matches": ["https://www.facebook.com/*"],
           "js": ["content.js"]
         }
+    ],
+    "web_accessible_resources": [
+      "thumbs_up_icon.png",
+      "thumbs_down_icon.png"
     ]
   }
