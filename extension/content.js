@@ -52,17 +52,18 @@ function contentChanged() {
   }
 
   lastFeedIndex = feedElement.length;
-
-  for (i = lastMetadataIndex; i < metadataElements.length; i += 2) {
+  var len = document.querySelectorAll(
+    '[data-pagelet^="FeedUnit_"]'
+  ).length;
+  for (i = lastMetadataIndex; i < len; i++) {
     let text = metadataElements[i].innerText;
     // Not a supported site
     // if (!supportedSites.includes(text)) {
     //   continue;
     // }
-    insertIntoFeed(Math.floor((i + 2) / 2));
+    insertIntoFeed(i);
   }
-
-  lastMetadataIndex = metadataElements.length;
+	lastMetadataIndex = len;
 
   //   sleep(10000).then(() => {
   //     return;
