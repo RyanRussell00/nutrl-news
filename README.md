@@ -1,8 +1,6 @@
 # neutral-news
 
-#Nutrl News 
-##Newsprint Track
-Our project aims to solve the problem: Do our current media channels effectively and ethically inform our population?
+# PLEASE NOTE: The APIs have been disabled for this project to prevent unsolicited use. If you wish to use the APIs please contact Ryan Russell and he can reenable them.
 
 ## Inspiration
 
