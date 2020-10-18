@@ -1,0 +1,14 @@
+{
+  "name": "Neutral News",
+  "version": "1.0",
+  "description": "Neutralize your news feed",
+  "permissions": ["activeTab", "declarativeContent", "https://facebook.com/"],
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "include_globs": ["*://*.facebook.*/"],
+      "js": ["axios.js", "content.js"]
+    }
+  ],
+  "manifest_version": 2
+}
