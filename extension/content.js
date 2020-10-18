@@ -236,12 +236,12 @@ async function insertIntoFeed(index, caption) {
     }">${resp[0].title}</span>
     <img src="${resp[0].image}" style="width: 100%;">
     <div style="height: 30px; padding: 10px 0px 10px 0px; margin: 0px 16px 0px 16px;">
-       <img src="${chrome.runtime.getURL(
+       <a><img src="${chrome.runtime.getURL(
          "./thumbs_up_icon.png"
-       )}" style="height: inherit;">
-        <img src="${chrome.runtime.getURL(
+       )}" style="height: inherit;"></a>
+        <a><img src="${chrome.runtime.getURL(
           "./thumbs_down_icon.png"
-        )}" style="height: inherit; margin: 0px 0px 0px 7px;">
+        )}" style="height: inherit; margin: 0px 0px 0px 7px;"></a>
            
         
     </div>
