@@ -5,9 +5,11 @@
 ## Pictures of it in action
 
 The original post is the Fox News post, and our extension added the ABC7 Chicago story. As you can see it got the same news story from 2 different companies.
+
 ![ABC7 Article recommended on Fox News post](https://media.discordapp.net/attachments/764178749306306591/767375910751961138/unknown.png?width=583&height=702)
 
 The original post is Donald J. Trump's text post, and our extension found the related story from the Washington Post and displayed it alongside the post.
+
 ![Donald J. Trump tweet with Washington Post article overlayed](https://media.discordapp.net/attachments/764178749306306591/767377204346355742/unknown.png?width=625&height=703)
 
 ## Inspiration
