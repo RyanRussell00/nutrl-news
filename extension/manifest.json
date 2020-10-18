@@ -10,5 +10,9 @@
       "js": ["axios.js", "content.js"]
     }
   ],
-  "manifest_version": 2
+  "manifest_version": 2,
+  "web_accessible_resources": [
+    "thumbs_up_icon.png",
+    "thumbs_down_icon.png"
+  ]
 }
