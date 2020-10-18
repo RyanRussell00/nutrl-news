@@ -54,17 +54,19 @@ function contentChanged() {
   }
 
   lastFeedIndex = feedElement.length;
+  var len = document.querySelectorAll(
+    '[data-pagelet^="FeedUnit_"]'
+  ).length;
+  for (i = lastMetadataIndex; i < len; i++) {
 
-  for (i = lastMetadataIndex; i < metadataElements.length - 1; i += 2) {
     let text = metadataElements[i].innerText;
     // Not a supported site
     // if (!supportedSites.includes(text)) {
     //   continue;
     // }
-    insertIntoFeed(Math.floor((i + 2) / 2), metadataElements[i + 1].innerText);
+    insertIntoFeed(i, metadataElements[i + 1].innerText);
   }
-
-  lastMetadataIndex = metadataElements.length;
+	lastMetadataIndex = len;
 
   sleep(1000).then(() => {
     theActualFeedElement.addEventListener(
