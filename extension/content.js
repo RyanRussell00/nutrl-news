@@ -32,9 +32,6 @@ var supportedSites = [
   "ABC News",
   "Breaking News",
   "CNN International",
-  "KIRO 7 News",
-  "Insider",
-  "Indiatimes",
 ];
 
 var indexOfNewsArticles = [];
