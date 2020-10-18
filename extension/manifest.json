@@ -4,13 +4,13 @@
   "description": "Neutralize your news feed",
   "permissions": ["activeTab", "declarativeContent", "storage"],
   "options_page": "options.html",
-  "content_scripts": [{
-    "matches": [ "*://*/*" ],
-    "include_globs": [
-        "*://*.facebook.*/*"
-    ],
-    "js": [ "content.js" ]
-}],
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "include_globs": ["*://*.facebook.*/"],
+      "js": ["content.js"]
+    }
+  ],
   "page_action": {
     "default_popup": "popup.html"
   },
