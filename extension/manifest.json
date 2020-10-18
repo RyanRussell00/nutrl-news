@@ -1,7 +1,7 @@
 {
-  "name": "Neutral News",
+  "name": "Nutrl News",
   "version": "1.0",
-  "description": "Neutralize your news feed",
+  "description": "Nutrlize your news feed",
   "permissions": ["activeTab", "declarativeContent", "https://facebook.com/"],
   "content_scripts": [
     {
@@ -11,8 +11,5 @@
     }
   ],
   "manifest_version": 2,
-  "web_accessible_resources": [
-    "thumbs_up_icon.png",
-    "thumbs_down_icon.png"
-  ]
+  "web_accessible_resources": ["thumbs_up_icon.png", "thumbs_down_icon.png"]
 }
