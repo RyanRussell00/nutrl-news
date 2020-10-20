@@ -1,4 +1,4 @@
-# neutral-news
+# Nutrl News
 
 ## PLEASE NOTE: The APIs have been disabled for this project to prevent unsolicited use. If you wish to use the APIs please contact Ryan Russell and he can reenable them.
 
